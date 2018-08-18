@@ -11,3 +11,5 @@ Authors@R:
            role = c("aut", "cre"),
            email = "devin.pastoor@gmail.com")
 RoxygenNote: 6.1.0
+Imports: 
+    R6
