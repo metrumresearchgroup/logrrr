@@ -14,4 +14,5 @@ RoxygenNote: 6.1.0
 Imports: 
     R6
 Suggests: 
-    testthat
+    testthat,
+    jsonlite

@@ -32,3 +32,24 @@ TextFormatter <- R6Class("TextFormatter",
                            }
                          )
 )
+
+
+#' text formatter
+#' @export
+JSONFormatter <- R6Class("JSONformatter",
+                         inherit = Formatter,
+                         public = list(
+                           auto_unbox = NULL,
+                           initialize = function(..., auto_unbox = TRUE) {
+                             if (!requireNamespace("jsonlite", quietly = TRUE)) {
+                               stop("JSON formatter requires the jsonlite package")
+                             }
+                             self$auto_unbox <- auto_unbox
+                             super$initialize(...)
+                           },
+                           format_entry = function(entry) {
+                             entry <- super$format_entry(entry)
+                             jsonlite::toJSON(entry, auto_unbox = self$auto_unbox)
+                           }
+                         )
+)
