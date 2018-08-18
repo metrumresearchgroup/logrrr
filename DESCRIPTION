@@ -1,0 +1,13 @@
+Package: explogger
+Type: Package
+Title: experimental structured logging
+Version: 0.0.1
+Description: Experimental structured logging framework.
+Encoding: UTF-8
+LazyData: true
+Authors@R: 
+    person(given = "Devin",
+           family = "Pastoor",
+           role = c("aut", "cre"),
+           email = "devin.pastoor@gmail.com")
+RoxygenNote: 6.1.0
