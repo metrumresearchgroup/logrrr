@@ -15,7 +15,7 @@ Logrrr <- R6Class("Logrrr",
      },
      set_output = function() {
          return(self)
-     }
+     },
      set_formatter = function() {
          return(self)
      },
