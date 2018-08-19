@@ -12,7 +12,9 @@ Authors@R:
            email = "devin.pastoor@gmail.com")
 RoxygenNote: 6.1.0
 Imports: 
-    R6
+    R6,
+    crayon
 Suggests: 
     testthat,
     jsonlite
+License: MIT + file LICENSE
