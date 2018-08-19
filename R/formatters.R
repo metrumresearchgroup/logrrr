@@ -1,3 +1,19 @@
+.lvls <- list(
+  "TRACE" = 1,
+  "DEBUG" = 2,
+  "INFO" = 3,
+  "WARN" = 4,
+  "ERROR" = 5,
+  "FATAL" = 6
+)
+
+should_log <- function(lvl, set_lvl_num) {
+  if (.lvls[[lvl]] > set_lvl_num) {
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
 color_trace <- crayon::silver
 color_debug <- crayon::make_style("purple")
 color_info <- crayon::blue
@@ -18,13 +34,13 @@ trim_level <- function(lvl, end = 4) {
 }
 
 level_color <- function(lvl) {
-  switch(tolower(lvl),
-         trace = color_trace,
-         debug = color_debug,
-         info = color_info,
-         warn = color_warn,
-         error = color_error,
-         fatal = color_fatal
+  switch(toupper(lvl),
+         TRACE = color_trace,
+         DEBUG = color_debug,
+         INFO = color_info,
+         WARN = color_warn,
+         ERROR = color_error,
+         FATAL = color_fatal
          )
 }
 
