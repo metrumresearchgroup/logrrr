@@ -13,45 +13,57 @@ rename_entry_fields <- function(entry, field_map) {
   return(entry)
 }
 
+trim_level <- function(lvl, end = 4) {
+  substr(lvl, 1, end)
+}
+
 level_color <- function(lvl) {
   switch(tolower(lvl),
-         debug = col_debug,
-         info = col_info,
-         warn = col_warn,
-         error = col_error,
-         fatal = col_fatal
+         trace = color_trace,
+         debug = color_debug,
+         info = color_info,
+         warn = color_warn,
+         error = color_error,
+         fatal = color_fatal
          )
 }
 
 
 #' text formatter factory function
-#' @export format_string glue format string
-#' @param no_color suppress colored output
+#' @param format_string glue format string
 #' @param field_map rename internal fields not exposed to user
+#' @param no_color suppress colored output
+#' @param no_truncate stop truncation of levels to 4 characters
 #' @param ... additional fields passed to glue
 #' @details
 #' TODO: add details
 #' @export
-TextFormatter <- function(format_string = "[{level}] {message} {extras}",
-                          no_color = FALSE,
-                          field_map = NULL) {
-  return(function(entry) {
-    .level <- entry$level
-    extras <-
-      format_entry_fields(entry[-which(names(entry) %in% c("message", "level"))],
-                          color_func = color_func)
-    entry <- rename_entry_fields(entry, field_map)
-
-    with(entry, {
+TextFormatter <-
+  function(format_string = "{level} {message} {extras}",
+           field_map = NULL,
+           no_color = FALSE,
+           no_truncate = FALSE,
+           ...) {
+    return(function(entry) {
       color_func <- NULL
-      if (!self$no_color) {
-        color_func <- level_color(.level)
-        level <- color_func(.level)
+      .level <- entry$level
+      if (!no_truncate) {
+        entry$level <- trim_level(entry$level)
       }
-      glue::glue(format_string, ...)
+      if (!no_color) {
+        color_func <- level_color(.level)
+        entry$level <- color_func(entry$level)
+      }
+      extras <-
+        format_entry_fields(entry[-which(names(entry) %in% c("message", "level"))],
+                            color_func = color_func)
+      entry <- rename_entry_fields(entry, field_map)
+
+      with(entry, {
+        glue::glue(format_string, ...)
+      })
     })
-  })
-}
+  }
 
 #' json formatter factory function
 #' @param auto_unbox pass to jsonlite
