@@ -9,7 +9,7 @@ NULL
 Logrrr <- R6Class("Logrrr",
  public =
    list(
-     initialize = function(output = getOption("explogger.output_file", stdout())) {
+     initialize = function(output = getOption("logrrr.output_file", stdout())) {
         # output can be a file or connection
        private$out <- output
      },
