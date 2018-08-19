@@ -1,4 +1,4 @@
-user_entries <- function(...) {
+user_fields <- function(...) {
   lapply(rlang::dots_list(...), function(.x) {
     if (rlang::is_bare_formula(.x) || rlang::is_function(.x)) {
       return(rlang::as_function(.x))
@@ -7,10 +7,7 @@ user_entries <- function(...) {
   })
 }
 
-eval_entries <- function(.e) {
-  if (is.null(.e)) {
-    return(NULL)
-  }
+eval_fields <- function(.e) {
   lapply(.e, function(.x) {
     # these should be the entries coerced from formula to function
     if (rlang::is_function(.x)) {
