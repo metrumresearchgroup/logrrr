@@ -4,15 +4,17 @@
 \alias{TextFormatter}
 \title{text formatter factory function}
 \usage{
-TextFormatter(format_string = "[{level}] {message} {extras}",
-  no_color = FALSE, field_map = NULL)
+TextFormatter(format_string = "{level} {message} {extras}",
+  field_map = NULL, no_color = FALSE, no_truncate = FALSE, ...)
 }
 \arguments{
 \item{format_string}{glue format string}
 
+\item{field_map}{rename internal fields not exposed to user}
+
 \item{no_color}{suppress colored output}
 
-\item{field_map}{rename internal fields not exposed to user}
+\item{no_truncate}{stop truncation of levels to 4 characters}
 
 \item{...}{additional fields passed to glue}
 }

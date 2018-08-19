@@ -1,4 +1,4 @@
 library(testthat)
-library(explogger)
+library(logrrr)
 
-test_check("explogger")
+test_check("logrrr")

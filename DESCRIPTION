@@ -13,7 +13,8 @@ Authors@R:
 RoxygenNote: 6.1.0
 Imports: 
     R6,
-    crayon
+    crayon,
+    glue
 Suggests: 
     testthat,
     jsonlite
