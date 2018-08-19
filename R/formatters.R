@@ -1,4 +1,5 @@
-color_debug <- crayon::green
+color_trace <- crayon::silver
+color_debug <- crayon::make_style("purple")
 color_info <- crayon::blue
 color_warn <- crayon::yellow
 color_error <- crayon::red
