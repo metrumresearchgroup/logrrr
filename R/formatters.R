@@ -7,8 +7,8 @@
   "FATAL" = 6
 )
 
-should_log <- function(lvl, set_lvl_num) {
-  if (.lvls[[lvl]] > set_lvl_num) {
+should_log <- function(lvl, log_level_num) {
+  if (.lvls[[lvl]] > log_level_num) {
     return(FALSE)
   }
   return(TRUE)
