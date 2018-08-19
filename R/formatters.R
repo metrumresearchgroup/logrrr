@@ -1,67 +1,73 @@
-col_debug <- crayon::silver
-col_info <- crayon::blue
-col_warn <- crayon::yellow
-col_error <- crayon::red
-col_fatal <- crayon::red
+color_debug <- crayon::green
+color_info <- crayon::blue
+color_warn <- crayon::yellow
+color_error <- crayon::red
+color_fatal <- crayon::red
 
-#' Stub formatter
+rename_entry_fields <- function(entry, field_map) {
+  if (!is.null(field_map)) {
+    names(entry)[which(names(entry) %in% names(field_map))] <-
+      field_map
+  }
+  return(entry)
+}
+
+level_color <- function(lvl) {
+  switch(tolower(lvl),
+         debug = col_debug,
+         info = col_info,
+         warn = col_warn,
+         error = col_error,
+         fatal = col_fatal
+         )
+}
+
+
+#' text formatter factory function
+#' @export format_string glue format string
+#' @param no_color suppress colored output
+#' @param field_map rename internal fields not exposed to user
+#' @param ... additional fields passed to glue
+#' @details
+#' TODO: add details
 #' @export
-Formatter <- R6Class(
-  "Formatter",
-  public = list(
-    initialize = function(field_map = NULL) {
-      private$field_map <- field_map
-    },
-    #' @param entry entry should have, at minimum, fields message, timestamp, level
-    format_entry = function(entry) {
-      if (!is.null(private$field_map)) {
-        names(entry)[which(names(entry) %in% names(private$field_map))] <-
-          private$field_map
+TextFormatter <- function(format_string = "[{level}] {message} {extras}",
+                          no_color = FALSE,
+                          field_map = NULL) {
+  return(function(entry) {
+    .level <- entry$level
+    extras <-
+      format_entry_fields(entry[-which(names(entry) %in% c("message", "level"))],
+                          color_func = color_func)
+    entry <- rename_entry_fields(entry, field_map)
+
+    with(entry, {
+      color_func <- NULL
+      if (!self$no_color) {
+        color_func <- level_color(.level)
+        level <- color_func(.level)
       }
-      entry
-    }
-  ),
-  private = list(field_map = NULL)
-)
+      glue::glue(format_string, ...)
+    })
+  })
+}
 
-#' text formatter
+#' json formatter factory function
+#' @param auto_unbox pass to jsonlite
+#' @param field_map rename internal fields not exposed to user
+#' @param ... additional fields passed to jsonlite and glue
+#' @details
+#' TODO: add details
 #' @export
-TextFormatter <- R6Class(
-  "TextFormatter",
-  inherit = Formatter,
-  public = list(
-    format_string = "NO TEMPLATE FORMAT STRING",
-    initialize = function(..., format_string = "[{level} {message} {extras}]") {
-      super$initialize(...)
-    },
-    format_entry = function(entry) {
-      entry <- super$format_entry(entry)
-      with(entry, {
-        glue::glue(self$format_string)
-      })
-      entry
-    }
-  )
-)
-
-
-#' text formatter
-#' @export
-JSONFormatter <- R6Class(
-  "JSONformatter",
-  inherit = Formatter,
-  public = list(
-    auto_unbox = NULL,
-    initialize = function(..., auto_unbox = TRUE) {
-      if (!requireNamespace("jsonlite", quietly = TRUE)) {
-        stop("JSON formatter requires the jsonlite package")
-      }
-      self$auto_unbox <- auto_unbox
-      super$initialize(...)
-    },
-    format_entry = function(entry) {
-      entry <- super$format_entry(entry)
-      jsonlite::toJSON(entry, auto_unbox = self$auto_unbox)
-    }
-  )
-)
+JSONFormatter <- function(auto_unbox = TRUE,
+                          field_map = NULL,
+                          ...) {
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("JSON formatter requires the jsonlite package")
+  }
+  return(function(entry) {
+    entry <- rename_entry_fields(entry, field_map)
+    # expose all the entry values directly so the glue template can pick them up
+    jsonlite::toJSON(entry, auto_unbox = auto_unbox, ...)
+  })
+}
