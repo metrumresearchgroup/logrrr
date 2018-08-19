@@ -7,7 +7,7 @@ user_entries <- function(...) {
   })
 }
 
-invoke_entries <- function(.e) {
+eval_entries <- function(.e) {
   if (is.null(.e)) {
     return(NULL)
   }
