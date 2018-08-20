@@ -1,18 +1,17 @@
 #' Create a Logrrr
 #' @importFrom R6 R6Class
 #' @name Logrrr
-#' @examples
-NULL
-
-
 #' @export
 Logrrr <- R6Class(
   "Logrrr",
   public = list(
     fields = NULL,
-    initialize = function(output = getOption("logrrr.output_file", stdout())) {
+    output = NULL,
+    log_level = NULL,
+    initialize = function(log_level = "INFO", output = LogOutput$new(TextFormatter(), stdout())) {
       # output can be a file or connection
-      private$out <- output
+      self$log_level <- sanitize_level(log_level)
+      self$output <- output
     },
     set_output = function() {
       return(self)
@@ -25,30 +24,26 @@ Logrrr <- R6Class(
       return(self)
     },
     set_level = function(level) {
-      lvl_set <- NULL
-      if (is.numeric(level)) {
-        lvl_set <- .lvls[[level]]
-      } else if (is.character(level)) {
-        lvl_set <- .lvls[[toupper(level)]]
-      }
-      if (is.null(lvl_set)) {
-        lvl_names <-
-          glue::glue_collapse(glue::glue("{names(.lvls)} or {.lvls}\n\n"))
-        stop(
-          glue::glue(
-            "incompatible level: {level}, should be one of:\n {lvl_names}"
-          )
-        )
-      }
       self$log_level <- lvl_set
+      self$set_level <- sanitize_level(level)
       return(self)
     },
-
     with_fields = function() {
       return(self)
     },
-    info = function() {
+    info = function(.x) {
+      entry <- list(
+        level = "INFO",
+        message = .x,
+        timestamp = format(Sys.time(),
+                           format = "%Y-%m-%d %H:%M:%S.%OS",
+                           tz = "UTC")
 
+      )
+      if (!is.null(self$fields)) {
+        entry <- modifyList(entry, self$fields)
+      }
+      self$output$write(entry)
     }
   ),
   private = list(out = NULL)
