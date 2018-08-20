@@ -13,7 +13,7 @@ LogOutput <- R6Class("LogOutput",
         self$out <- output
      },
      write = function(.x) {
-        cat(self$format_func(.x), file = self$out)
+        cat(glue::glue("{msg}\n\n", msg = self$format_func(.x)), file = self$out)
      }
      )
 )
