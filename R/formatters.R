@@ -14,6 +14,26 @@ should_log <- function(lvl, log_level_num) {
   return(TRUE)
 }
 
+sanitize_level <- function(level) {
+  lvl_set <- NULL
+  if (is.numeric(level)) {
+    lvl_set <- .lvls[[level]]
+  } else if (is.character(level)) {
+    lvl_set <- .lvls[[toupper(level)]]
+  }
+  if (is.null(lvl_set)) {
+    lvl_names <-
+      glue::glue_collapse(glue::glue("{names(.lvls)} or {.lvls}\n\n"))
+    stop(
+      glue::glue(
+        "incompatible level: {level}, should be one of:\n {lvl_names}"
+      )
+    )
+  }
+  lvl_set
+}
+
+
 color_trace <- crayon::silver
 color_debug <- crayon::make_style("purple")
 color_info <- crayon::blue
