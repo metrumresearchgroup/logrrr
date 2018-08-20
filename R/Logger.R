@@ -1,3 +1,18 @@
+build_entry <- function(level, .x, fields) {
+  entry <- list(
+    level = level,
+    message = .x,
+    timestamp = format(Sys.time(),
+                       format = "%Y-%m-%d %H:%M:%S.%OS",
+                       tz = "UTC")
+
+  )
+  if (!is.null(fields)) {
+    entry <- modifyList(entry, eval_fields(fields))
+  }
+  return(entry)
+}
+
 #' Create a Logrrr
 #' @importFrom R6 R6Class
 #' @name Logrrr
@@ -31,18 +46,20 @@ Logrrr <- R6Class(
     with_fields = function() {
       return(self)
     },
+    trace = function(.x) {
+      entry <- build_entry("TRACE", .x, self$fields)
+      self$output$write(entry)
+    },
+    debug = function(.x) {
+      entry <- build_entry("DEBUG", .x, self$fields)
+      self$output$write(entry)
+    },
     info = function(.x) {
-      entry <- list(
-        level = "INFO",
-        message = .x,
-        timestamp = format(Sys.time(),
-                           format = "%Y-%m-%d %H:%M:%S.%OS",
-                           tz = "UTC")
-
-      )
-      if (!is.null(self$fields)) {
-        entry <- modifyList(entry, self$fields)
-      }
+      entry <- build_entry("INFO", .x, self$fields)
+      self$output$write(entry)
+    },
+    warn = function(.x) {
+      entry <- build_entry("WARN", .x, self$fields)
       self$output$write(entry)
     }
   ),
