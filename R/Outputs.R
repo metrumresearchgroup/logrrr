@@ -5,7 +5,9 @@ LogOutput <- R6Class("LogOutput",
      format_func = NULL,
      out = NULL,
      initialize = function(format_func = TextFormatter(),
-                           output = stdout()) {
+                           output = stdout(),
+                           append = TRUE,
+                           ...) {
         if (!rlang::is_function(format_func)) {
           stop("format_func must be a function")
         }
@@ -13,7 +15,7 @@ LogOutput <- R6Class("LogOutput",
         self$out <- output
      },
      write = function(.x) {
-        cat(glue::glue("{msg}\n\n", msg = self$format_func(.x)), file = self$out)
+        cat(glue::glue("{msg}\n\n", msg = self$format_func(.x)), file = self$out, append = append, ...)
      }
      )
 )
