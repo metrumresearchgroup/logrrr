@@ -70,15 +70,17 @@ level_color <- function(lvl) {
 #' @param field_map rename internal fields not exposed to user
 #' @param no_color suppress colored output
 #' @param no_truncate stop truncation of levels to 4 characters
+#' @param no_space no additional spacing for message fields
 #' @param ... additional fields passed to glue
 #' @details
 #' TODO: add details
 #' @export
 TextFormatter <-
-  function(format_string = "{level} {message} {extras}",
+  function(format_string = "{level}: {message} {extras}",
            field_map = NULL,
            no_color = FALSE,
            no_truncate = FALSE,
+           no_space = FALSE,
            ...) {
     return(function(entry) {
       color_func <- NULL
@@ -89,6 +91,9 @@ TextFormatter <-
       if (!no_color) {
         color_func <- level_color(.level)
         entry$level <- color_func(entry$level)
+      }
+      if (!no_space) {
+        entry$message <- sprintf("%-35s", entry$message)
       }
       extras <-
         format_entry_fields(entry[-which(names(entry) %in% c("message", "level"))],
