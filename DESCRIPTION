@@ -11,6 +11,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "devin.pastoor@gmail.com")
 RoxygenNote: 6.1.0
+Roxygen: list(markdown = TRUE)
 Imports: 
     R6,
     crayon,
@@ -18,5 +19,6 @@ Imports:
     rlang (>= 0.2.1)
 Suggests: 
     testthat,
-    jsonlite
+    jsonlite,
+    covr
 License: MIT + file LICENSE
