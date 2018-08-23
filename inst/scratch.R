@@ -32,8 +32,22 @@ print_fake_logs(logtext)
 print_fake_logs(logjson)
 print_fake_logs(logcomb)
 
+
 logtext$set_level("WARN")
 print_fake_logs(logtext)
 
 logtext$set_level("INFO")
 print_fake_logs(logtext)
+
+lwarn <- logtext$warn
+
+lwarn("a warning")
+
+# should retain pointer to existing object
+
+logtext$set_fields(extra = "another field")
+
+lwarn("a second warning")
+
+logtext$set_fields(extra = NULL)
+lwarn("a third warning")
