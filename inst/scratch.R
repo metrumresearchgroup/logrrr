@@ -16,13 +16,15 @@ logtext$set_fields(pid = Sys.getpid(), difftime = diff_factory())
 logjson$set_fields(pid = Sys.getpid(), difftime = diff_factory())
 
 print_fake_logs <- function(log, sleep_scale = 0.001) {
-  log$info("Starting App")
+  log$debug("Starting App")
   Sys.sleep(runif(1, 1, 5)*sleep_scale)
-  log$info("User `John Smith` logged in!")
+  log$debug("User `John Smith` logged in!")
   log$trace("John Smith selected explore tab")
   log$with_fields(addl = "something more")$info("Begin loading dataset")
   Sys.sleep(runif(1, 1, 5)*sleep_scale)
   log$warn("Dataset loading timed out")
+  sim_result <- "SUCCESSFUL"
+  log$info("simulation result was {sim_result}")
   invisible()
 }
 print_fake_logs(logtext)
