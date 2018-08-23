@@ -18,6 +18,7 @@ build_entry <- function(level, .x, fields, entry_fields) {
 
 #' Create a Logrrr
 #' @importFrom R6 R6Class
+#' @importFrom utils modifyList
 #' @name Logrrr
 #' @export
 Logrrr <- R6Class(
