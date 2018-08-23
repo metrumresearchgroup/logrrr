@@ -57,29 +57,29 @@ Logrrr <- R6Class(
       self$entry_fields <- user_fields(...)
       return(self)
     },
-    trace = function(.x) {
-      entry <- build_entry("TRACE", .x, self$fields, self$entry_fields)
+    trace = function(..., .env = parent.frame()) {
+      entry <- build_entry("TRACE", glue::glue(..., .envir = .env), self$fields, self$entry_fields)
       self$entry_fields <- NULL
       lapply(self$outputs, function(output) {
         output$write(entry)
       })
     },
-    debug = function(.x) {
-      entry <- build_entry("DEBUG", .x, self$fields, self$entry_fields)
+    debug = function(..., .env = parent.frame()) {
+      entry <- build_entry("DEBUG", glue::glue(..., .envir = .env), self$fields, self$entry_fields)
       self$entry_fields <- NULL
       lapply(self$outputs, function(output) {
         output$write(entry)
       })
     },
-    info = function(.x) {
-      entry <- build_entry("INFO", .x, self$fields, self$entry_fields)
+    info = function(..., .env = parent.frame()) {
+      entry <- build_entry("INFO", glue::glue(..., .envir = .env), self$fields, self$entry_fields)
       self$entry_fields <- NULL
       lapply(self$outputs, function(output) {
         output$write(entry)
       })
     },
-    warn = function(.x) {
-      entry <- build_entry("WARN", .x, self$fields, self$entry_fields)
+    warn = function(..., .env = parent.frame()) {
+      entry <- build_entry("WARN", glue::glue(..., .envir = .env), self$fields, self$entry_fields)
       self$entry_fields <- NULL
       lapply(self$outputs, function(output) {
         output$write(entry)
