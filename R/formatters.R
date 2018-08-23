@@ -8,10 +8,10 @@
 )
 
 should_log <- function(lvl, log_level_num) {
-  if (.lvls[[lvl]] > log_level_num) {
-    return(FALSE)
+  if (.lvls[[lvl]] >= log_level_num) {
+    return(TRUE)
   }
-  return(TRUE)
+  return(FALSE)
 }
 
 sanitize_level <- function(level) {

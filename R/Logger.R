@@ -49,8 +49,7 @@ Logrrr <- R6Class(
       return(self)
     },
     set_level = function(level) {
-      self$log_level <- lvl_set
-      self$set_level <- sanitize_level(level)
+      self$log_level <- sanitize_level(level)
       return(self)
     },
     with_fields = function(...) {
@@ -58,32 +57,48 @@ Logrrr <- R6Class(
       return(self)
     },
     trace = function(..., .env = parent.frame()) {
+      if (!should_log("TRACE", self$log_level)) {
+        return(invisible(self))
+      }
       entry <- build_entry("TRACE", glue::glue(..., .envir = .env), self$fields, self$entry_fields)
       self$entry_fields <- NULL
       lapply(self$outputs, function(output) {
         output$write(entry)
       })
+      return(invisible(self))
     },
     debug = function(..., .env = parent.frame()) {
+      if (!should_log("DEBUG", self$log_level)) {
+        return(invisible(self))
+      }
       entry <- build_entry("DEBUG", glue::glue(..., .envir = .env), self$fields, self$entry_fields)
       self$entry_fields <- NULL
       lapply(self$outputs, function(output) {
         output$write(entry)
       })
+      return(invisible(self))
     },
     info = function(..., .env = parent.frame()) {
+      if (!should_log("INFO", self$log_level)) {
+        return(invisible(self))
+      }
       entry <- build_entry("INFO", glue::glue(..., .envir = .env), self$fields, self$entry_fields)
       self$entry_fields <- NULL
       lapply(self$outputs, function(output) {
         output$write(entry)
       })
+      return(invisible(self))
     },
     warn = function(..., .env = parent.frame()) {
+      if (!should_log("WARN", self$log_level)) {
+        return(invisible(self))
+      }
       entry <- build_entry("WARN", glue::glue(..., .envir = .env), self$fields, self$entry_fields)
       self$entry_fields <- NULL
       lapply(self$outputs, function(output) {
         output$write(entry)
       })
+      return(invisible(self))
     }
   )
 )
