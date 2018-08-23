@@ -31,3 +31,9 @@ print_fake_logs <- function(log, sleep_scale = 0.001) {
 print_fake_logs(logtext)
 print_fake_logs(logjson)
 print_fake_logs(logcomb)
+
+logtext$set_level("WARN")
+print_fake_logs(logtext)
+
+logtext$set_level("INFO")
+print_fake_logs(logtext)
