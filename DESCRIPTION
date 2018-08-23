@@ -14,7 +14,8 @@ RoxygenNote: 6.1.0
 Imports: 
     R6,
     crayon,
-    glue
+    glue,
+    rlang
 Suggests: 
     testthat,
     jsonlite

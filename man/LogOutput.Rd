@@ -3,12 +3,12 @@
 \docType{data}
 \name{LogOutput}
 \alias{LogOutput}
-\title{stub output}
+\title{LogOutput base class}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 LogOutput
 }
 \description{
-stub output
+LogOutput base class
 }
 \keyword{datasets}
