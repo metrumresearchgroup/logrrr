@@ -4,12 +4,15 @@
 \alias{JSONFormatter}
 \title{json formatter factory function}
 \usage{
-JSONFormatter(auto_unbox = TRUE, field_map = NULL, ...)
+JSONFormatter(field_map = NULL, .auto_unbox = TRUE, .force = TRUE,
+  ...)
 }
 \arguments{
-\item{auto_unbox}{pass to jsonlite}
-
 \item{field_map}{rename internal fields not exposed to user}
+
+\item{.auto_unbox}{pass to jsonlite}
+
+\item{.force}{force as much coercion as possible for json conversion}
 
 \item{...}{additional fields passed to jsonlite and glue}
 }
