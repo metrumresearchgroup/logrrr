@@ -31,31 +31,31 @@ Logrrr <- R6Class(
     initialize = function(log_level = "INFO", outputs = LogOutput$new(TextFormatter(), stdout())) {
       # output can be a file or connection
       self$log_level <- sanitize_level(log_level)
+      self$set_outputs(outputs)
+    },
+    set_outputs = function(outputs, append = FALSE) {
       if (rlang::is_list(outputs)) {
         lapply(outputs, function(.x) {
           stopifnot(is_log_output(.x))
         })
-        self$outputs <- outputs
+        self$outputs <- if (append) c(outputs, self$outputs) else outputs
       } else {
         stopifnot(is_log_output(outputs))
-        self$outputs <- list(outputs)
+        self$outputs <- if (append) c(list(outputs), self$outputs) else list(outputs)
       }
-    },
-    set_output = function(output) {
-      self$output <- output
-      return(self)
+      return(invisible(self))
     },
     set_fields = function(...) {
       self$fields <- user_fields(...)
-      return(self)
+      return(invisible(self))
     },
     set_level = function(level) {
       self$log_level <- sanitize_level(level)
-      return(self)
+      return(invisible(self))
     },
     with_fields = function(...) {
       self$entry_fields <- user_fields(...)
-      return(self)
+      return(invisible(self))
     },
     trace = function(..., .env = parent.frame()) {
       if (!should_log("TRACE", self$log_level)) {
@@ -100,6 +100,17 @@ Logrrr <- R6Class(
         output$write(entry)
       })
       return(invisible(self))
+    },
+    error = function(..., .env = parent.frame()) {
+      if (!should_log("ERROR", self$log_level)) {
+        return(invisible(self))
+      }
+      entry <- build_entry("ERROR", glue::glue(..., .envir = .env), self$fields, self$entry_fields)
+      self$entry_fields <- NULL
+      lapply(self$outputs, function(output) {
+        output$write(entry)
+      })
+      stop(glue::glue(..., .envir = .env), call. = FALSE)
     }
   )
 )

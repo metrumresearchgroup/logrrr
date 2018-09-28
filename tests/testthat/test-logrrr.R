@@ -1,0 +1,151 @@
+context("test-logrrr")
+
+describe("logrrr works", {
+  it("can be initialized with defaults", {
+    lgr <- Logrrr$new()
+    lgr_output <- lgr$outputs[[1]]
+    expect_true(inherits(lgr_output, "LogOutput"))
+    expect_true(!is.null(lgr$log_level) && is.numeric(lgr$log_level))
+    expect_true(lgr$log_level > 0)
+  })
+  it("can set the log level", {
+    lgr <- Logrrr$new()
+    lgr$set_level("WARN")
+    warn_lvl <- lgr$log_level
+    lgr$set_level("INFO")
+    info_lvl <- lgr$log_level
+    expect_true(warn_lvl > info_lvl)
+  })
+  it("can send messages to a connection, with default values", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon))
+    lgr$info("a message")
+    lgr$warn("a message")
+    close(outcon)
+    expect_true(length(outputstream) == 2) # each message is a string
+    expect_true(grepl("INFO", outputstream[[1]]))
+    expect_true(grepl("WARN", outputstream[[2]]))
+    expect_match(outputstream[[1]], "timestamp")
+  })
+
+  it("will suppress color ansi characters to output", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon))
+    lgrnc <- Logrrr$new(outputs = LogOutput$new(format_func = TextFormatter(no_color = TRUE), output = outcon))
+    lgr$info("a message")
+    lgrnc$info("a message")
+    close(outcon)
+    expect_equal(length(outputstream), 2) # each message is a string
+    expect_true(outputstream[[1]] != outputstream[[2]])
+    expect_equal(substr(outputstream[[1]], 1, 9), "\033[34mINFO")
+    expect_equal(substr(outputstream[[2]], 1, 9), "INFO: a m")
+  })
+  it("will only log messages greater than a particular log level", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon))
+    lgr$info("a message")
+    lgr$debug("a debug message")
+    close(outcon)
+    os_info <- outputstream
+    expect_equal(length(os_info), 1) # no debug
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon))
+    lgr$set_level("DEBUG")
+    lgr$info("a message")
+    lgr$debug("a debug message")
+    close(outcon)
+    os_debug <- outputstream
+    expect_equal(length(os_debug), 2)
+    expect_equal(os_info, os_debug[[1]])
+  })
+  it("can write to multiple outputs", {
+    outcon1 <- textConnection("outputstream1", "w")
+    outcon2 <- textConnection("outputstream2", "w")
+    lgr <- Logrrr$new(outputs = list(o1 = LogOutput$new(output = outcon1), o2 = LogOutput$new(output = outcon2)))
+    lgr$info("a message")
+    close(outcon1)
+    close(outcon2)
+    expect_equal(length(outputstream1), 1)
+    expect_equal(length(outputstream2), 1)
+    expect_match(outputstream1, "INFO")
+    expect_match(outputstream2, "a message")
+    expect_equal(outputstream1, outputstream2)
+  })
+  it("can log different levels", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(log_level = "TRACE", LogOutput$new(output = outcon))
+    lgr$trace("trace msg")
+    lgr$debug("debug msg")
+    lgr$info("info msg")
+    lgr$warn("warn msg")
+    expect_error(lgr$error("error msg"), "error msg")
+    close(outcon)
+
+    expect_match(outputstream[[1]], "trace")
+    expect_match(outputstream[[2]], "debug")
+    expect_match(outputstream[[3]], "info")
+    expect_match(outputstream[[4]], "warn")
+    expect_match(outputstream[[5]], "error")
+  })
+  it("is chainable", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(log_level = "TRACE", LogOutput$new(output = outcon))
+    try(lgr$trace('trace')$debug('debug')$info('info')$warn('warn')$error('error'), silent = TRUE)
+    close(outcon)
+    expect_equal(length(outputstream), 5)
+
+    # should not log to levels below
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(log_level = "INFO", LogOutput$new(output = outcon))
+    try(lgr$trace('trace')$debug('debug')$info('info')$warn('warn')$error('error'), silent = TRUE)
+    close(outcon)
+    expect_equal(length(outputstream), 3)
+
+    # should not log to levels below
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(log_level = "FATAL", LogOutput$new(output = outcon))
+    try(lgr$trace('trace')$debug('debug')$info('info')$warn('warn')$error('error'), silent = TRUE)
+    close(outcon)
+    expect_equal(length(outputstream), 0)
+  })
+  it("can persist entries for all subsequent messages", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon, format_func = TextFormatter(no_color = TRUE)))
+    lgr$set_fields(user = "devin")
+    lgr$info("a nice message")
+    lgr$warn("a scary warning")
+    close(outcon)
+    expect_match(outputstream[[1]], "user=devin")
+    expect_match(outputstream[[2]], "user=devin")
+  })
+  it("should color additional entries as well", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon))
+    lgr$set_fields(user = "devin")
+    lgr$info("a nice message")
+    lgr$warn("a scary warning")
+    close(outcon)
+    expect_match(outputstream[[1]], "\033[34muser\033[39m=devin", fixed = TRUE)
+    expect_match(outputstream[[2]], "\033[33muser\033[39m=devin", fixed = TRUE)
+  })
+  it("can set an entries for a single message", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon, format_func = TextFormatter(no_color = TRUE)))
+    lgr$with_fields(sim_status = "started")$info("start sim")
+    lgr$warn("some other warning")
+    close(outcon)
+    expect_true(grepl("sim_status=started", outputstream[[1]]))
+    expect_false(grepl("sim_status=started", outputstream[[2]]))
+  })
+  it("logs json messages to a file that can be read back in line by line", {
+    tmpfile <- tempfile(fileext = ".txt")
+    lgrf <- Logrrr$new(output = list(file = LogOutput$new(format_func = JSONFormatter(), output = tmpfile)))
+    lgrf$info("a first message")
+    lgrf$with_fields(user = "devin")$warn("a warning")
+    loglines <- readLines(tmpfile)
+    expect_equal(length(loglines), 2)
+    expect_null(jsonlite::fromJSON(loglines[[1]])$user)
+    expect_equal(jsonlite::fromJSON(loglines[[2]])$user, "devin")
+
+  })
+})
