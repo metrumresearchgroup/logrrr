@@ -1,6 +1,10 @@
 
 [![Travis build
 status](https://travis-ci.org/metrumresearchgroup/logrrr.svg?branch=master)](https://travis-ci.org/metrumresearchgroup/logrrr)
+[![Coverage
+Status](https://img.shields.io/codecov/c/github/metrumresearchgroup/logrrr/master.svg)](https://codecov.io/github/metrumresearchgroup/logrrr?branch=master)
+[![Lifecycle
+Status](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -25,11 +29,11 @@ library(logrrr)
 # likely don't call it log as it will override the mathematical log function
 lgr <- Logrrr$new()
 lgr$info("an info message")
-#> INFO: an info message                     timestamp=2018-09-28 20:04:53.53
+#> INFO: an info message                     timestamp=2018-09-28 20:30:19.19
 lgr$warn("careful!")
-#> WARN: careful!                            timestamp=2018-09-28 20:04:53.53
+#> WARN: careful!                            timestamp=2018-09-28 20:30:19.19
 lgr$with_fields(user = "devin")$info("logged in")
-#> INFO: logged in                           timestamp=2018-09-28 20:04:53.53 user=devin
+#> INFO: logged in                           timestamp=2018-09-28 20:30:19.19 user=devin
 ```
 
 The various levels are colored
@@ -40,13 +44,13 @@ The various levels are colored
 lgr$debug("a debug message that you won't see")
 lgr$set_level("DEBUG")
 lgr$debug("now you can see")
-#> DEBU: now you can see                     timestamp=2018-09-28 20:04:53.53
+#> DEBU: now you can see                     timestamp=2018-09-28 20:30:19.19
 lgr$info("of course can still see info")
-#> INFO: of course can still see info        timestamp=2018-09-28 20:04:53.53
+#> INFO: of course can still see info        timestamp=2018-09-28 20:30:19.19
 lgr$set_level("WARN")
 lgr$info("can't see this now!")
 lgr$warn("but can see this")
-#> WARN: but can see this                    timestamp=2018-09-28 20:04:53.53
+#> WARN: but can see this                    timestamp=2018-09-28 20:30:19.19
 ```
 
 ## Customization
@@ -63,11 +67,11 @@ lgr <- Logrrr$new(log_level = "DEBUG")
 ``` r
 logjson <- Logrrr$new(output = LogOutput$new(format_func = JSONFormatter()))
 logjson$info("an info message")
-#> {"level":"INFO","message":"an info message","timestamp":"2018-09-28 20:04:53.53"}
+#> {"level":"INFO","message":"an info message","timestamp":"2018-09-28 20:30:19.19"}
 logjson$warn("careful!")
-#> {"level":"WARN","message":"careful!","timestamp":"2018-09-28 20:04:53.53"}
+#> {"level":"WARN","message":"careful!","timestamp":"2018-09-28 20:30:19.19"}
 logjson$with_fields(user = "devin")$info("logged in")
-#> {"level":"INFO","message":"logged in","timestamp":"2018-09-28 20:04:53.53","user":"devin"}
+#> {"level":"INFO","message":"logged in","timestamp":"2018-09-28 20:30:19.19","user":"devin"}
 ```
 
 ### Multiple Outputs
@@ -80,19 +84,19 @@ logcomb <- Logrrr$new(output = list(text = LogOutput$new(),
                                     json = LogOutput$new(format_func = JSONFormatter(), output = logfile)))
 
 logcomb$info("an info message")
-#> INFO: an info message                     timestamp=2018-09-28 20:04:53.53
+#> INFO: an info message                     timestamp=2018-09-28 20:30:19.19
 logcomb$warn("careful!")
-#> WARN: careful!                            timestamp=2018-09-28 20:04:53.53
+#> WARN: careful!                            timestamp=2018-09-28 20:30:19.19
 logcomb$with_fields(user = "devin")$info("logged in")
-#> INFO: logged in                           timestamp=2018-09-28 20:04:53.53 user=devin
+#> INFO: logged in                           timestamp=2018-09-28 20:30:19.19 user=devin
 
 cat("\ncontents of log file: \n\n")
 #> 
 #> contents of log file:
 readLines(logfile)
-#> [1] "{\"level\":\"INFO\",\"message\":\"an info message\",\"timestamp\":\"2018-09-28 20:04:53.53\"}"             
-#> [2] "{\"level\":\"WARN\",\"message\":\"careful!\",\"timestamp\":\"2018-09-28 20:04:53.53\"}"                    
-#> [3] "{\"level\":\"INFO\",\"message\":\"logged in\",\"timestamp\":\"2018-09-28 20:04:53.53\",\"user\":\"devin\"}"
+#> [1] "{\"level\":\"INFO\",\"message\":\"an info message\",\"timestamp\":\"2018-09-28 20:30:19.19\"}"             
+#> [2] "{\"level\":\"WARN\",\"message\":\"careful!\",\"timestamp\":\"2018-09-28 20:30:19.19\"}"                    
+#> [3] "{\"level\":\"INFO\",\"message\":\"logged in\",\"timestamp\":\"2018-09-28 20:30:19.19\",\"user\":\"devin\"}"
 ```
 
 ## shiny application
@@ -161,28 +165,30 @@ si$platform
 #>  ctype    en_US.UTF-8                 
 #>  tz       America/New_York            
 #>  date     2018-09-28
-as.data.frame(si$packages,row.names = NULL)[, c("package", "ondiskversion","date", "source")]
-#>                 package ondiskversion       date         source
-#> assertthat   assertthat         0.2.0 2017-04-11 CRAN (R 3.5.0)
-#> backports     backports         1.1.2 2017-12-13 CRAN (R 3.5.0)
-#> cli                 cli         1.0.0 2017-11-05 CRAN (R 3.5.0)
-#> crayon           crayon         1.3.4 2017-09-16 CRAN (R 3.5.0)
-#> digest           digest        0.6.16 2018-08-22 CRAN (R 3.5.0)
-#> evaluate       evaluate          0.11 2018-07-17 CRAN (R 3.5.0)
-#> glue               glue         1.3.0 2018-07-17 CRAN (R 3.5.0)
-#> htmltools     htmltools         0.3.6 2017-04-28 CRAN (R 3.5.0)
-#> jsonlite       jsonlite           1.5 2017-06-01 CRAN (R 3.5.0)
-#> knitr             knitr          1.20 2018-02-20 CRAN (R 3.5.0)
-#> logrrr           logrrr         0.0.1 2018-09-28          local
-#> magrittr       magrittr           1.5 2014-11-22 CRAN (R 3.5.0)
-#> R6                   R6         2.2.2 2017-06-17 CRAN (R 3.5.0)
-#> Rcpp               Rcpp       0.12.18 2018-07-23 CRAN (R 3.5.0)
-#> rlang             rlang         0.2.2 2018-08-16 CRAN (R 3.5.0)
-#> rmarkdown     rmarkdown          1.10 2018-06-11 CRAN (R 3.5.0)
-#> rprojroot     rprojroot         1.3.2 2018-01-03 CRAN (R 3.5.0)
-#> sessioninfo sessioninfo         1.1.0 2018-09-25 CRAN (R 3.5.0)
-#> stringi         stringi         1.2.4 2018-07-20 CRAN (R 3.5.0)
-#> stringr         stringr         1.3.1 2018-05-10 CRAN (R 3.5.0)
-#> withr             withr         2.1.2 2018-03-15 CRAN (R 3.5.0)
-#> yaml               yaml         2.2.0 2018-07-25 CRAN (R 3.5.0)
+sidf <- as.data.frame(si$packages,row.names = NULL)[, c("package", "ondiskversion","date", "source")]
+row.names(sidf) <- NULL
+sidf
+#>        package ondiskversion       date         source
+#> 1   assertthat         0.2.0 2017-04-11 CRAN (R 3.5.0)
+#> 2    backports         1.1.2 2017-12-13 CRAN (R 3.5.0)
+#> 3          cli         1.0.0 2017-11-05 CRAN (R 3.5.0)
+#> 4       crayon         1.3.4 2017-09-16 CRAN (R 3.5.0)
+#> 5       digest        0.6.16 2018-08-22 CRAN (R 3.5.0)
+#> 6     evaluate          0.11 2018-07-17 CRAN (R 3.5.0)
+#> 7         glue         1.3.0 2018-07-17 CRAN (R 3.5.0)
+#> 8    htmltools         0.3.6 2017-04-28 CRAN (R 3.5.0)
+#> 9     jsonlite           1.5 2017-06-01 CRAN (R 3.5.0)
+#> 10       knitr          1.20 2018-02-20 CRAN (R 3.5.0)
+#> 11      logrrr         0.0.1 2018-09-28          local
+#> 12    magrittr           1.5 2014-11-22 CRAN (R 3.5.0)
+#> 13          R6         2.2.2 2017-06-17 CRAN (R 3.5.0)
+#> 14        Rcpp       0.12.18 2018-07-23 CRAN (R 3.5.0)
+#> 15       rlang         0.2.2 2018-08-16 CRAN (R 3.5.0)
+#> 16   rmarkdown          1.10 2018-06-11 CRAN (R 3.5.0)
+#> 17   rprojroot         1.3.2 2018-01-03 CRAN (R 3.5.0)
+#> 18 sessioninfo         1.1.0 2018-09-25 CRAN (R 3.5.0)
+#> 19     stringi         1.2.4 2018-07-20 CRAN (R 3.5.0)
+#> 20     stringr         1.3.1 2018-05-10 CRAN (R 3.5.0)
+#> 21       withr         2.1.2 2018-03-15 CRAN (R 3.5.0)
+#> 22        yaml         2.2.0 2018-07-25 CRAN (R 3.5.0)
 ```

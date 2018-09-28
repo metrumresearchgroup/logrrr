@@ -3,6 +3,8 @@ output: github_document
 ---
 
 [![Travis build status](https://travis-ci.org/metrumresearchgroup/logrrr.svg?branch=master)](https://travis-ci.org/metrumresearchgroup/logrrr)
+[![Coverage Status](https://img.shields.io/codecov/c/github/metrumresearchgroup/logrrr/master.svg)](https://codecov.io/github/metrumresearchgroup/logrrr?branch=master)
+[![Lifecycle Status](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 

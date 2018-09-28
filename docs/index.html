@@ -79,11 +79,11 @@
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># likely don't call it log as it will override the mathematical log function</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">lgr &lt;-<span class="st"> </span>Logrrr<span class="op">$</span><span class="kw">new</span>()</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"an info message"</span>)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; INFO: an info message                     timestamp=2018-09-28 20:07:17.17</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; INFO: an info message                     timestamp=2018-09-28 20:30:31.31</span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">lgr<span class="op">$</span><span class="kw">warn</span>(<span class="st">"careful!"</span>)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; WARN: careful!                            timestamp=2018-09-28 20:07:17.17</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; WARN: careful!                            timestamp=2018-09-28 20:30:31.31</span></a>
 <a class="sourceLine" id="cb1-8" data-line-number="8">lgr<span class="op">$</span><span class="kw">with_fields</span>(<span class="dt">user =</span> <span class="st">"devin"</span>)<span class="op">$</span><span class="kw">info</span>(<span class="st">"logged in"</span>)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; INFO: logged in                           timestamp=2018-09-28 20:07:17.17 user=devin</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; INFO: logged in                           timestamp=2018-09-28 20:30:31.31 user=devin</span></a></code></pre></div>
 <p>The various levels are colored</p>
 <div class="figure">
 <img src="reference/figures/logrrr_levels.png" alt="output"><p class="caption">output</p>
@@ -91,13 +91,13 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">lgr<span class="op">$</span><span class="kw">debug</span>(<span class="st">"a debug message that you won't see"</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">lgr<span class="op">$</span><span class="kw">set_level</span>(<span class="st">"DEBUG"</span>)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">lgr<span class="op">$</span><span class="kw">debug</span>(<span class="st">"now you can see"</span>)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; DEBU: now you can see                     timestamp=2018-09-28 20:07:17.17</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; DEBU: now you can see                     timestamp=2018-09-28 20:30:31.31</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"of course can still see info"</span>)</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; INFO: of course can still see info        timestamp=2018-09-28 20:07:17.17</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; INFO: of course can still see info        timestamp=2018-09-28 20:30:31.31</span></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7">lgr<span class="op">$</span><span class="kw">set_level</span>(<span class="st">"WARN"</span>)</a>
 <a class="sourceLine" id="cb2-8" data-line-number="8">lgr<span class="op">$</span><span class="kw">info</span>(<span class="st">"can't see this now!"</span>)</a>
 <a class="sourceLine" id="cb2-9" data-line-number="9">lgr<span class="op">$</span><span class="kw">warn</span>(<span class="st">"but can see this"</span>)</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; WARN: but can see this                    timestamp=2018-09-28 20:07:17.17</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; WARN: but can see this                    timestamp=2018-09-28 20:30:31.31</span></a></code></pre></div>
 </div>
 <div id="customization" class="section level2">
 <h2 class="hasAnchor">
@@ -109,11 +109,11 @@
 <a href="#json-logging" class="anchor"></a>JSON logging</h3>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">logjson &lt;-<span class="st"> </span>Logrrr<span class="op">$</span><span class="kw">new</span>(<span class="dt">output =</span> LogOutput<span class="op">$</span><span class="kw">new</span>(<span class="dt">format_func =</span> <span class="kw"><a href="reference/JSONFormatter.html">JSONFormatter</a></span>()))</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">logjson<span class="op">$</span><span class="kw">info</span>(<span class="st">"an info message"</span>)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; {"level":"INFO","message":"an info message","timestamp":"2018-09-28 20:07:17.17"}</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; {"level":"INFO","message":"an info message","timestamp":"2018-09-28 20:30:31.31"}</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">logjson<span class="op">$</span><span class="kw">warn</span>(<span class="st">"careful!"</span>)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; {"level":"WARN","message":"careful!","timestamp":"2018-09-28 20:07:17.17"}</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; {"level":"WARN","message":"careful!","timestamp":"2018-09-28 20:30:31.31"}</span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">logjson<span class="op">$</span><span class="kw">with_fields</span>(<span class="dt">user =</span> <span class="st">"devin"</span>)<span class="op">$</span><span class="kw">info</span>(<span class="st">"logged in"</span>)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; {"level":"INFO","message":"logged in","timestamp":"2018-09-28 20:07:17.17","user":"devin"}</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; {"level":"INFO","message":"logged in","timestamp":"2018-09-28 20:30:31.31","user":"devin"}</span></a></code></pre></div>
 </div>
 <div id="multiple-outputs" class="section level3">
 <h3 class="hasAnchor">
@@ -124,19 +124,19 @@
 <a class="sourceLine" id="cb5-3" data-line-number="3">                                    <span class="dt">json =</span> LogOutput<span class="op">$</span><span class="kw">new</span>(<span class="dt">format_func =</span> <span class="kw"><a href="reference/JSONFormatter.html">JSONFormatter</a></span>(), <span class="dt">output =</span> logfile)))</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">logcomb<span class="op">$</span><span class="kw">info</span>(<span class="st">"an info message"</span>)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; INFO: an info message                     timestamp=2018-09-28 20:07:17.17</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; INFO: an info message                     timestamp=2018-09-28 20:30:31.31</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7">logcomb<span class="op">$</span><span class="kw">warn</span>(<span class="st">"careful!"</span>)</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; WARN: careful!                            timestamp=2018-09-28 20:07:17.17</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; WARN: careful!                            timestamp=2018-09-28 20:30:31.31</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9">logcomb<span class="op">$</span><span class="kw">with_fields</span>(<span class="dt">user =</span> <span class="st">"devin"</span>)<span class="op">$</span><span class="kw">info</span>(<span class="st">"logged in"</span>)</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; INFO: logged in                           timestamp=2018-09-28 20:07:17.17 user=devin</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; INFO: logged in                           timestamp=2018-09-28 20:30:31.31 user=devin</span></a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="kw">cat</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">contents of log file: </span><span class="ch">\n\n</span><span class="st">"</span>)</a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; contents of log file:</span></a>
 <a class="sourceLine" id="cb5-15" data-line-number="15"><span class="kw">readLines</span>(logfile)</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; [1] "{\"level\":\"INFO\",\"message\":\"an info message\",\"timestamp\":\"2018-09-28 20:07:17.17\"}"             </span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt; [2] "{\"level\":\"WARN\",\"message\":\"careful!\",\"timestamp\":\"2018-09-28 20:07:17.17\"}"                    </span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt; [3] "{\"level\":\"INFO\",\"message\":\"logged in\",\"timestamp\":\"2018-09-28 20:07:17.17\",\"user\":\"devin\"}"</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; [1] "{\"level\":\"INFO\",\"message\":\"an info message\",\"timestamp\":\"2018-09-28 20:30:31.31\"}"             </span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt; [2] "{\"level\":\"WARN\",\"message\":\"careful!\",\"timestamp\":\"2018-09-28 20:30:31.31\"}"                    </span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt; [3] "{\"level\":\"INFO\",\"message\":\"logged in\",\"timestamp\":\"2018-09-28 20:30:31.31\",\"user\":\"devin\"}"</span></a></code></pre></div>
 </div>
 </div>
 <div id="shiny-application" class="section level2">
@@ -317,6 +317,8 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/metrumresearchgroup/logrrr"><img src="https://travis-ci.org/metrumresearchgroup/logrrr.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://codecov.io/github/metrumresearchgroup/logrrr?branch=master"><img src="https://img.shields.io/codecov/c/github/metrumresearchgroup/logrrr/master.svg" alt="Coverage Status"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle Status"></a></li>
 </ul>
 </div>
 </div>
