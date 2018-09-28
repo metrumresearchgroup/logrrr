@@ -142,6 +142,9 @@ devtools::install_github("metrumresearchgroup/logrrr")
 ```{r}
 si <- sessioninfo::session_info()
 si$platform
-as.data.frame(si$packages,row.names = NULL)
+sidf <- as.data.frame(si$packages,row.names = NULL)[, c("package", "ondiskversion","date", "source")]
+row.names(sidf) <- NULL
+sidf
 ```
+
 

@@ -25,11 +25,11 @@ library(logrrr)
 # likely don't call it log as it will override the mathematical log function
 lgr <- Logrrr$new()
 lgr$info("an info message")
-#> INFO: an info message                     timestamp=2018-09-28 19:53:20.20
+#> INFO: an info message                     timestamp=2018-09-28 20:04:53.53
 lgr$warn("careful!")
-#> WARN: careful!                            timestamp=2018-09-28 19:53:20.20
+#> WARN: careful!                            timestamp=2018-09-28 20:04:53.53
 lgr$with_fields(user = "devin")$info("logged in")
-#> INFO: logged in                           timestamp=2018-09-28 19:53:20.20 user=devin
+#> INFO: logged in                           timestamp=2018-09-28 20:04:53.53 user=devin
 ```
 
 The various levels are colored
@@ -40,13 +40,13 @@ The various levels are colored
 lgr$debug("a debug message that you won't see")
 lgr$set_level("DEBUG")
 lgr$debug("now you can see")
-#> DEBU: now you can see                     timestamp=2018-09-28 19:53:20.20
+#> DEBU: now you can see                     timestamp=2018-09-28 20:04:53.53
 lgr$info("of course can still see info")
-#> INFO: of course can still see info        timestamp=2018-09-28 19:53:20.20
+#> INFO: of course can still see info        timestamp=2018-09-28 20:04:53.53
 lgr$set_level("WARN")
 lgr$info("can't see this now!")
 lgr$warn("but can see this")
-#> WARN: but can see this                    timestamp=2018-09-28 19:53:20.20
+#> WARN: but can see this                    timestamp=2018-09-28 20:04:53.53
 ```
 
 ## Customization
@@ -63,11 +63,11 @@ lgr <- Logrrr$new(log_level = "DEBUG")
 ``` r
 logjson <- Logrrr$new(output = LogOutput$new(format_func = JSONFormatter()))
 logjson$info("an info message")
-#> {"level":"INFO","message":"an info message","timestamp":"2018-09-28 19:53:20.20"}
+#> {"level":"INFO","message":"an info message","timestamp":"2018-09-28 20:04:53.53"}
 logjson$warn("careful!")
-#> {"level":"WARN","message":"careful!","timestamp":"2018-09-28 19:53:20.20"}
+#> {"level":"WARN","message":"careful!","timestamp":"2018-09-28 20:04:53.53"}
 logjson$with_fields(user = "devin")$info("logged in")
-#> {"level":"INFO","message":"logged in","timestamp":"2018-09-28 19:53:20.20","user":"devin"}
+#> {"level":"INFO","message":"logged in","timestamp":"2018-09-28 20:04:53.53","user":"devin"}
 ```
 
 ### Multiple Outputs
@@ -80,19 +80,19 @@ logcomb <- Logrrr$new(output = list(text = LogOutput$new(),
                                     json = LogOutput$new(format_func = JSONFormatter(), output = logfile)))
 
 logcomb$info("an info message")
-#> INFO: an info message                     timestamp=2018-09-28 19:53:20.20
+#> INFO: an info message                     timestamp=2018-09-28 20:04:53.53
 logcomb$warn("careful!")
-#> WARN: careful!                            timestamp=2018-09-28 19:53:20.20
+#> WARN: careful!                            timestamp=2018-09-28 20:04:53.53
 logcomb$with_fields(user = "devin")$info("logged in")
-#> INFO: logged in                           timestamp=2018-09-28 19:53:20.20 user=devin
+#> INFO: logged in                           timestamp=2018-09-28 20:04:53.53 user=devin
 
 cat("\ncontents of log file: \n\n")
 #> 
 #> contents of log file:
 readLines(logfile)
-#> [1] "{\"level\":\"INFO\",\"message\":\"an info message\",\"timestamp\":\"2018-09-28 19:53:20.20\"}"             
-#> [2] "{\"level\":\"WARN\",\"message\":\"careful!\",\"timestamp\":\"2018-09-28 19:53:20.20\"}"                    
-#> [3] "{\"level\":\"INFO\",\"message\":\"logged in\",\"timestamp\":\"2018-09-28 19:53:20.20\",\"user\":\"devin\"}"
+#> [1] "{\"level\":\"INFO\",\"message\":\"an info message\",\"timestamp\":\"2018-09-28 20:04:53.53\"}"             
+#> [2] "{\"level\":\"WARN\",\"message\":\"careful!\",\"timestamp\":\"2018-09-28 20:04:53.53\"}"                    
+#> [3] "{\"level\":\"INFO\",\"message\":\"logged in\",\"timestamp\":\"2018-09-28 20:04:53.53\",\"user\":\"devin\"}"
 ```
 
 ## shiny application
@@ -161,97 +161,28 @@ si$platform
 #>  ctype    en_US.UTF-8                 
 #>  tz       America/New_York            
 #>  date     2018-09-28
-as.data.frame(si$packages,row.names = NULL)
-#>                 package ondiskversion loadedversion
-#> assertthat   assertthat         0.2.0         0.2.0
-#> backports     backports         1.1.2         1.1.2
-#> cli                 cli         1.0.0         1.0.0
-#> crayon           crayon         1.3.4         1.3.4
-#> digest           digest        0.6.16        0.6.16
-#> evaluate       evaluate          0.11          0.11
-#> glue               glue         1.3.0         1.3.0
-#> htmltools     htmltools         0.3.6         0.3.6
-#> jsonlite       jsonlite           1.5           1.5
-#> knitr             knitr          1.20          1.20
-#> logrrr           logrrr         0.0.1         0.0.1
-#> magrittr       magrittr           1.5           1.5
-#> R6                   R6         2.2.2         2.2.2
-#> Rcpp               Rcpp       0.12.18       0.12.18
-#> rlang             rlang         0.2.2         0.2.2
-#> rmarkdown     rmarkdown          1.10          1.10
-#> rprojroot     rprojroot         1.3.2         1.3-2
-#> sessioninfo sessioninfo         1.1.0         1.1.0
-#> stringi         stringi         1.2.4         1.2.4
-#> stringr         stringr         1.3.1         1.3.1
-#> withr             withr         2.1.2         2.1.2
-#> yaml               yaml         2.2.0         2.2.0
-#>                                            path
-#> assertthat   /Users/devinp/Rpkgs/3.5/assertthat
-#> backports     /Users/devinp/Rpkgs/3.5/backports
-#> cli                 /Users/devinp/Rpkgs/3.5/cli
-#> crayon           /Users/devinp/Rpkgs/3.5/crayon
-#> digest           /Users/devinp/Rpkgs/3.5/digest
-#> evaluate       /Users/devinp/Rpkgs/3.5/evaluate
-#> glue               /Users/devinp/Rpkgs/3.5/glue
-#> htmltools     /Users/devinp/Rpkgs/3.5/htmltools
-#> jsonlite       /Users/devinp/Rpkgs/3.5/jsonlite
-#> knitr             /Users/devinp/Rpkgs/3.5/knitr
-#> logrrr           /Users/devinp/Rpkgs/3.5/logrrr
-#> magrittr       /Users/devinp/Rpkgs/3.5/magrittr
-#> R6                   /Users/devinp/Rpkgs/3.5/R6
-#> Rcpp               /Users/devinp/Rpkgs/3.5/Rcpp
-#> rlang             /Users/devinp/Rpkgs/3.5/rlang
-#> rmarkdown     /Users/devinp/Rpkgs/3.5/rmarkdown
-#> rprojroot     /Users/devinp/Rpkgs/3.5/rprojroot
-#> sessioninfo /Users/devinp/Rpkgs/3.5/sessioninfo
-#> stringi         /Users/devinp/Rpkgs/3.5/stringi
-#> stringr         /Users/devinp/Rpkgs/3.5/stringr
-#> withr             /Users/devinp/Rpkgs/3.5/withr
-#> yaml               /Users/devinp/Rpkgs/3.5/yaml
-#>                                      loadedpath attached is_base
-#> assertthat   /Users/devinp/Rpkgs/3.5/assertthat    FALSE   FALSE
-#> backports     /Users/devinp/Rpkgs/3.5/backports    FALSE   FALSE
-#> cli                 /Users/devinp/Rpkgs/3.5/cli    FALSE   FALSE
-#> crayon           /Users/devinp/Rpkgs/3.5/crayon    FALSE   FALSE
-#> digest           /Users/devinp/Rpkgs/3.5/digest    FALSE   FALSE
-#> evaluate       /Users/devinp/Rpkgs/3.5/evaluate    FALSE   FALSE
-#> glue               /Users/devinp/Rpkgs/3.5/glue    FALSE   FALSE
-#> htmltools     /Users/devinp/Rpkgs/3.5/htmltools    FALSE   FALSE
-#> jsonlite       /Users/devinp/Rpkgs/3.5/jsonlite    FALSE   FALSE
-#> knitr             /Users/devinp/Rpkgs/3.5/knitr    FALSE   FALSE
-#> logrrr           /Users/devinp/Rpkgs/3.5/logrrr     TRUE   FALSE
-#> magrittr       /Users/devinp/Rpkgs/3.5/magrittr    FALSE   FALSE
-#> R6                   /Users/devinp/Rpkgs/3.5/R6    FALSE   FALSE
-#> Rcpp               /Users/devinp/Rpkgs/3.5/Rcpp    FALSE   FALSE
-#> rlang             /Users/devinp/Rpkgs/3.5/rlang    FALSE   FALSE
-#> rmarkdown     /Users/devinp/Rpkgs/3.5/rmarkdown    FALSE   FALSE
-#> rprojroot     /Users/devinp/Rpkgs/3.5/rprojroot    FALSE   FALSE
-#> sessioninfo /Users/devinp/Rpkgs/3.5/sessioninfo    FALSE   FALSE
-#> stringi         /Users/devinp/Rpkgs/3.5/stringi    FALSE   FALSE
-#> stringr         /Users/devinp/Rpkgs/3.5/stringr    FALSE   FALSE
-#> withr             /Users/devinp/Rpkgs/3.5/withr    FALSE   FALSE
-#> yaml               /Users/devinp/Rpkgs/3.5/yaml    FALSE   FALSE
-#>                   date         source md5ok                 library
-#> assertthat  2017-04-11 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> backports   2017-12-13 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> cli         2017-11-05 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> crayon      2017-09-16 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> digest      2018-08-22 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> evaluate    2018-07-17 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> glue        2018-07-17 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> htmltools   2017-04-28 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> jsonlite    2017-06-01 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> knitr       2018-02-20 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> logrrr      2018-09-28          local    NA /Users/devinp/Rpkgs/3.5
-#> magrittr    2014-11-22 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> R6          2017-06-17 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> Rcpp        2018-07-23 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> rlang       2018-08-16 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> rmarkdown   2018-06-11 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> rprojroot   2018-01-03 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> sessioninfo 2018-09-25 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> stringi     2018-07-20 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> stringr     2018-05-10 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> withr       2018-03-15 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
-#> yaml        2018-07-25 CRAN (R 3.5.0)    NA /Users/devinp/Rpkgs/3.5
+as.data.frame(si$packages,row.names = NULL)[, c("package", "ondiskversion","date", "source")]
+#>                 package ondiskversion       date         source
+#> assertthat   assertthat         0.2.0 2017-04-11 CRAN (R 3.5.0)
+#> backports     backports         1.1.2 2017-12-13 CRAN (R 3.5.0)
+#> cli                 cli         1.0.0 2017-11-05 CRAN (R 3.5.0)
+#> crayon           crayon         1.3.4 2017-09-16 CRAN (R 3.5.0)
+#> digest           digest        0.6.16 2018-08-22 CRAN (R 3.5.0)
+#> evaluate       evaluate          0.11 2018-07-17 CRAN (R 3.5.0)
+#> glue               glue         1.3.0 2018-07-17 CRAN (R 3.5.0)
+#> htmltools     htmltools         0.3.6 2017-04-28 CRAN (R 3.5.0)
+#> jsonlite       jsonlite           1.5 2017-06-01 CRAN (R 3.5.0)
+#> knitr             knitr          1.20 2018-02-20 CRAN (R 3.5.0)
+#> logrrr           logrrr         0.0.1 2018-09-28          local
+#> magrittr       magrittr           1.5 2014-11-22 CRAN (R 3.5.0)
+#> R6                   R6         2.2.2 2017-06-17 CRAN (R 3.5.0)
+#> Rcpp               Rcpp       0.12.18 2018-07-23 CRAN (R 3.5.0)
+#> rlang             rlang         0.2.2 2018-08-16 CRAN (R 3.5.0)
+#> rmarkdown     rmarkdown          1.10 2018-06-11 CRAN (R 3.5.0)
+#> rprojroot     rprojroot         1.3.2 2018-01-03 CRAN (R 3.5.0)
+#> sessioninfo sessioninfo         1.1.0 2018-09-25 CRAN (R 3.5.0)
+#> stringi         stringi         1.2.4 2018-07-20 CRAN (R 3.5.0)
+#> stringr         stringr         1.3.1 2018-05-10 CRAN (R 3.5.0)
+#> withr             withr         2.1.2 2018-03-15 CRAN (R 3.5.0)
+#> yaml               yaml         2.2.0 2018-07-25 CRAN (R 3.5.0)
 ```
