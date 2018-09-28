@@ -31,19 +31,19 @@ Logrrr <- R6Class(
     initialize = function(log_level = "INFO", outputs = LogOutput$new(TextFormatter(), stdout())) {
       # output can be a file or connection
       self$log_level <- sanitize_level(log_level)
+      self$set_outputs(outputs)
+    },
+    set_outputs = function(outputs, append = FALSE) {
       if (rlang::is_list(outputs)) {
         lapply(outputs, function(.x) {
           stopifnot(is_log_output(.x))
         })
-        self$outputs <- outputs
+        self$outputs <- if (append) c(outputs, self$outputs) else outputs
       } else {
         stopifnot(is_log_output(outputs))
-        self$outputs <- list(outputs)
+        self$outputs <- if (append) c(list(outputs), self$outputs) else list(outputs)
       }
-    },
-    set_output = function(output) {
-      self$output <- output
-      return(self)
+      return(invisible(self))
     },
     set_fields = function(...) {
       self$fields <- user_fields(...)
