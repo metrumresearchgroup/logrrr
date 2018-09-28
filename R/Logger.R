@@ -100,6 +100,17 @@ Logrrr <- R6Class(
         output$write(entry)
       })
       return(invisible(self))
+    },
+    error = function(..., .env = parent.frame()) {
+      if (!should_log("ERROR", self$log_level)) {
+        return(invisible(self))
+      }
+      entry <- build_entry("ERROR", glue::glue(..., .envir = .env), self$fields, self$entry_fields)
+      self$entry_fields <- NULL
+      lapply(self$outputs, function(output) {
+        output$write(entry)
+      })
+      stop(glue::glue(..., .envir = .env), call. = FALSE)
     }
   )
 )
