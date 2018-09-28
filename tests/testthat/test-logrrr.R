@@ -137,4 +137,15 @@ describe("logrrr works", {
     expect_true(grepl("sim_status=started", outputstream[[1]]))
     expect_false(grepl("sim_status=started", outputstream[[2]]))
   })
+  it("logs json messages to a file that can be read back in line by line", {
+    tmpfile <- tempfile(fileext = ".txt")
+    lgrf <- Logrrr$new(output = list(file = LogOutput$new(format_func = JSONFormatter(), output = tmpfile)))
+    lgrf$info("a first message")
+    lgrf$with_fields(user = "devin")$warn("a warning")
+    loglines <- readLines(tmpfile)
+    expect_equal(length(loglines), 2)
+    expect_null(jsonlite::fromJSON(loglines[[1]])$user)
+    expect_equal(jsonlite::fromJSON(loglines[[2]])$user, "devin")
+
+  })
 })
