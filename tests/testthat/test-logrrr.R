@@ -16,7 +16,7 @@ describe("logrrr works", {
     info_lvl <- lgr$log_level
     expect_true(warn_lvl > info_lvl)
   })
-  it("can send messages to a connection", {
+  it("can send messages to a connection, with default values", {
     outcon <- textConnection("outputstream", "w")
     lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon))
     lgr$info("a message")
@@ -25,7 +25,9 @@ describe("logrrr works", {
     expect_true(length(outputstream) == 2) # each message is a string
     expect_true(grepl("INFO", outputstream[[1]]))
     expect_true(grepl("WARN", outputstream[[2]]))
+    expect_match(outputstream[[1]], "timestamp")
   })
+
   it("will suppress color ansi characters to output", {
     outcon <- textConnection("outputstream", "w")
     lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon))
@@ -55,5 +57,55 @@ describe("logrrr works", {
     os_debug <- outputstream
     expect_equal(length(os_debug), 2)
     expect_equal(os_info, os_debug[[1]])
+  })
+  it("can write to multiple outputs", {
+    outcon1 <- textConnection("outputstream1", "w")
+    outcon2 <- textConnection("outputstream2", "w")
+    lgr <- Logrrr$new(outputs = list(o1 = LogOutput$new(output = outcon1), o2 = LogOutput$new(output = outcon2)))
+    lgr$info("a message")
+    close(outcon1)
+    close(outcon2)
+    expect_equal(length(outputstream1), 1)
+    expect_equal(length(outputstream2), 1)
+    expect_match(outputstream1, "INFO")
+    expect_match(outputstream2, "a message")
+    expect_equal(outputstream1, outputstream2)
+  })
+  it("can log different levels", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(log_level = "TRACE", LogOutput$new(output = outcon))
+    lgr$trace("trace msg")
+    lgr$debug("debug msg")
+    lgr$info("info msg")
+    lgr$warn("warn msg")
+    try({lgr$error("error msg")}, silent = TRUE)
+    close(outcon)
+
+    expect_match(outputstream[[1]], "trace")
+    expect_match(outputstream[[2]], "debug")
+    expect_match(outputstream[[3]], "info")
+    expect_match(outputstream[[4]], "warn")
+    expect_match(outputstream[[5]], "error")
+  })
+  it("is chainable", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(log_level = "TRACE", LogOutput$new(output = outcon))
+    try(lgr$trace('trace')$debug('debug')$info('info')$warn('warn')$error('error'), silent = TRUE)
+    close(outcon)
+    expect_equal(length(outputstream), 5)
+
+    # should not log to levels below
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(log_level = "INFO", LogOutput$new(output = outcon))
+    try(lgr$trace('trace')$debug('debug')$info('info')$warn('warn')$error('error'), silent = TRUE)
+    close(outcon)
+    expect_equal(length(outputstream), 3)
+
+    # should not log to levels below
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(log_level = "FATAL", LogOutput$new(output = outcon))
+    try(lgr$trace('trace')$debug('debug')$info('info')$warn('warn')$error('error'), silent = TRUE)
+    close(outcon)
+    expect_equal(length(outputstream), 0)
   })
 })
