@@ -47,15 +47,15 @@ Logrrr <- R6Class(
     },
     set_fields = function(...) {
       self$fields <- user_fields(...)
-      return(self)
+      return(invisible(self))
     },
     set_level = function(level) {
       self$log_level <- sanitize_level(level)
-      return(self)
+      return(invisible(self))
     },
     with_fields = function(...) {
       self$entry_fields <- user_fields(...)
-      return(self)
+      return(invisible(self))
     },
     trace = function(..., .env = parent.frame()) {
       if (!should_log("TRACE", self$log_level)) {
