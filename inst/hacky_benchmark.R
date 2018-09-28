@@ -31,3 +31,9 @@ bmr <- bench::mark(
   logmsgs(logjson, 1000),
   check = FALSE
 )
+
+library(tidyverse)
+bmr %>% mutate(n = as.numeric(str_extract(expression, "\\d+")),
+               type = str_replace(expression, "logmsgs\\(", ""),
+               type = str_replace(type, ",.+$", "")
+               ) %>% select(type, n, median, max, n_gc) %>% arrange(n)
