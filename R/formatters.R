@@ -107,21 +107,28 @@ TextFormatter <-
   }
 
 #' json formatter factory function
-#' @param auto_unbox pass to jsonlite
 #' @param field_map rename internal fields not exposed to user
+#' @param .auto_unbox pass to jsonlite
+#' @param .force force as much coercion as possible for json conversion
 #' @param ... additional fields passed to jsonlite and glue
 #' @details
 #' TODO: add details
 #' @export
-JSONFormatter <- function(auto_unbox = TRUE,
+JSONFormatter <- function(
                           field_map = NULL,
+                          .auto_unbox = TRUE,
+                          .force = TRUE,
                           ...) {
   if (!requireNamespace("jsonlite", quietly = TRUE)) {
     stop("JSON formatter requires the jsonlite package")
   }
-  return(function(entry) {
+  force(.force)
+  force(.auto_unbox)
+  return(function(entry, ..., force = .force, auto_unbox = .auto_unbox) {
     entry <- rename_entry_fields(entry, field_map)
     # expose all the entry values directly so the glue template can pick them up
-    jsonlite::toJSON(entry, auto_unbox = auto_unbox, ...)
+    # explicitly not wrapping in tryCatch as want to explode so improper coercion
+    # is not improperly attempting to log
+    jsonlite::toJSON(entry, auto_unbox = auto_unbox, force = force, ...)
   })
 }
