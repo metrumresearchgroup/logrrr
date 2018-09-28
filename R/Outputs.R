@@ -1,5 +1,5 @@
 is_log_output <- function(.x) {
-       inherits(x, "LogOutput")
+       inherits(.x, "LogOutput")
 }
 
 #' LogOutput base class
