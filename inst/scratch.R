@@ -35,9 +35,7 @@ print_fake_logs <- function(log, sleep_scale = 0.00001) {
 print_fake_logs(logtext)
 print_fake_logs(logjson)
 print_fake_logs(logcomb)
-for (i in 1:1000) {
-  print_fake_logs(logfile)
-}
+print_fake_logs(logfile)
 print_fake_logs(logcsv)
 
 logtext$set_level("WARN")
