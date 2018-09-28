@@ -3,6 +3,8 @@
 logtext <- Logrrr$new()
 logjson <- Logrrr$new(output = LogOutput$new(format_func = JSONFormatter()))
 logcomb <- Logrrr$new(output = list(text = LogOutput$new(),
+                                    json = LogOutput$new(format_func = JSONFormatter())))
+logcombfile <- Logrrr$new(output = list(text = LogOutput$new(),
                                     file = LogOutput$new(format_func = JSONFormatter(), output = "log.txt")))
 # example factory function that would allow time differences relative
 # to creation
@@ -16,7 +18,7 @@ diff_factory <- function(units = "secs", round = 2) {
 logtext$set_fields(pid = Sys.getpid(), difftime = diff_factory())
 logjson$set_fields(pid = Sys.getpid(), difftime = diff_factory())
 
-print_fake_logs <- function(log, sleep_scale = 0.001) {
+print_fake_logs <- function(log, sleep_scale = 0.1) {
   log$info("Starting App")
   Sys.sleep(runif(1, 1, 5)*sleep_scale)
   log$debug("User `John Smith` logged in!")
