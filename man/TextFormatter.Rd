@@ -4,7 +4,7 @@
 \alias{TextFormatter}
 \title{text formatter factory function}
 \usage{
-TextFormatter(format_string = "{level}: {message} {extras}",
+TextFormatter(format_string = "{level}: {msg} {extras}",
   field_map = NULL, no_color = FALSE, no_truncate = FALSE,
   no_space = FALSE, ...)
 }
