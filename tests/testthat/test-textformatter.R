@@ -2,8 +2,8 @@ context("test-textformatter")
 
 
 describe("TextFormatter", {
-  sample_info <- list(level = "INFO", pid = 23434, message = "success")
-  sample_error <- list(level = "ERROR", pid = 23434, message = "something bad happened")
+  sample_info <- list(level = "INFO", pid = 23434, msg = "success")
+  sample_error <- list(level = "ERROR", pid = 23434, msg = "something bad happened")
 
   it("returns entries", {
     tf <- TextFormatter()
