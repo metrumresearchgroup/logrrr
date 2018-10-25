@@ -1,10 +1,10 @@
 build_entry <- function(level, .x, fields, entry_fields) {
   entry <- list(
     level = level,
-    message = .x,
-    timestamp = format(Sys.time(),
-                       format = "%Y-%m-%d %H:%M:%S.%OS",
-                       tz = "UTC")
+    msg = .x,
+    time = format(Sys.time(),
+                  format = "%Y-%m-%d %H:%M:%S.%OS",
+                  tz = "UTC")
 
   )
   if (!is.null(fields)) {
