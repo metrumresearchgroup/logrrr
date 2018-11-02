@@ -5,12 +5,10 @@ describe("fields", {
   it("can capture expressions", {
     expect_equal(typeof(ue[[1]]), "double")
     expect_equal(class(ue[[1]]), c("POSIXct", "POSIXt"))
-    # expressions should be converted to functions
-    expect_equal(typeof(ue[[2]]), "closure")
-    expect_equal(class(ue[[2]]), "function")
+    # expressions
+    expect_true(rlang::is_function(ue[[2]]))
     # bare functions should also be ok
-    expect_equal(typeof(ue[[3]]), "closure")
-    expect_equal(class(ue[[3]]), "function")
+    expect_true(rlang::is_function(ue[[2]]))
   })
   it("will evaluate expressions and functions later", {
     ue_result <- eval_fields(ue)
