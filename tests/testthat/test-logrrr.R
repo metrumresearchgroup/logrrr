@@ -25,7 +25,7 @@ describe("logrrr works", {
     expect_true(length(outputstream) == 2) # each message is a string
     expect_true(grepl("INFO", outputstream[[1]]))
     expect_true(grepl("WARN", outputstream[[2]]))
-    expect_match(outputstream[[1]], "timestamp")
+    expect_match(outputstream[[1]], "time")
   })
 
   it("will suppress color ansi characters to output", {
