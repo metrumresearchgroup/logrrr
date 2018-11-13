@@ -46,7 +46,12 @@ Logrrr <- R6Class(
       return(invisible(self))
     },
     set_fields = function(...) {
-      self$fields <- user_fields(...)
+      new_fields <- user_fields(...)
+      if (is.null(self$fields)) {
+        self$fields <- new_fields
+      } else {
+        self$fields <- modifyList(self$fields, new_fields)
+      }
       return(invisible(self))
     },
     set_level = function(level) {

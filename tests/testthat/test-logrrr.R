@@ -118,6 +118,25 @@ describe("logrrr works", {
     expect_match(outputstream[[1]], "user=devin")
     expect_match(outputstream[[2]], "user=devin")
   })
+
+  it("can add additional persistent entries", {
+    outcon <- textConnection("outputstream", "w")
+    lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon, format_func = TextFormatter(no_color = TRUE)))
+    lgr$set_fields(user = "devin")
+    lgr$info("a nice message")
+    lgr$set_fields(other = "another")
+    lgr$warn("a scary warning")
+    lgr$set_fields(other = NULL)
+    lgr$warn("a final warning")
+    close(outcon)
+    expect_match(outputstream[[1]], "user=devin")
+    # user=devin should still exist even as another field gets added
+    expect_match(outputstream[[2]], "user=devin")
+    expect_match(outputstream[[2]], "other=another")
+    expect_match(outputstream[[3]], "user=devin")
+    # no expect_nomatch so using the same detection pattern as expect_match
+    expect_false(grepl("other=another", outputstream[[3]], fixed = TRUE))
+  })
   it("should color additional entries as well", {
     outcon <- textConnection("outputstream", "w")
     lgr <- Logrrr$new(outputs = LogOutput$new(output = outcon))
