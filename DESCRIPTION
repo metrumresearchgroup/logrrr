@@ -1,7 +1,7 @@
 Package: logrrr
 Type: Package
 Title: Structured, Pluggable Logging Framework
-Version: 0.1.0.9000
+Version: 0.1.0.9001
 Description: A structured, pluggable logging framework for R.
 Encoding: UTF-8
 LazyData: true
