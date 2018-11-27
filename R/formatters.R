@@ -76,7 +76,7 @@ level_color <- function(lvl) {
 #' TODO: add details
 #' @export
 TextFormatter <-
-  function(format_string = "{level}: {message} {extras}",
+  function(format_string = "{level}: {msg} {extras}",
            field_map = NULL,
            no_color = FALSE,
            no_truncate = FALSE,
@@ -93,10 +93,10 @@ TextFormatter <-
         entry$level <- color_func(entry$level)
       }
       if (!no_space) {
-        entry$message <- sprintf("%-35s", entry$message)
+        entry$msg <- sprintf("%-35s", entry$msg)
       }
       extras <-
-        format_entry_fields(entry[-which(names(entry) %in% c("message", "level"))],
+        format_entry_fields(entry[-which(names(entry) %in% c("msg", "level"))],
                             color_func = color_func)
       entry <- rename_entry_fields(entry, field_map)
 

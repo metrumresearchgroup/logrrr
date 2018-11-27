@@ -1,10 +1,10 @@
 build_entry <- function(level, .x, fields, entry_fields) {
   entry <- list(
     level = level,
-    message = .x,
-    timestamp = format(Sys.time(),
-                       format = "%Y-%m-%d %H:%M:%S.%OS",
-                       tz = "UTC")
+    msg = .x,
+    time = format(Sys.time(),
+                  format = "%Y-%m-%d %H:%M:%S.%OS",
+                  tz = "UTC")
 
   )
   if (!is.null(fields)) {
@@ -46,7 +46,12 @@ Logrrr <- R6Class(
       return(invisible(self))
     },
     set_fields = function(...) {
-      self$fields <- user_fields(...)
+      new_fields <- user_fields(...)
+      if (is.null(self$fields)) {
+        self$fields <- new_fields
+      } else {
+        self$fields <- modifyList(self$fields, new_fields)
+      }
       return(invisible(self))
     },
     set_level = function(level) {
